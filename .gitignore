@@ -1,0 +1,6 @@
+output
+eclipsegen
+examples/example/bin
+.gradle
+.settings
+/bin
