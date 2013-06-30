@@ -56,7 +56,7 @@ public class Play2Plugin extends Plugin {
 		List<Class> list = new ArrayList<Class>();
         for (String classname : classes) {
         	try {
-				Class<?> entity = Class.forName(classname);
+				Class<?> entity = Class.forName(classname, false, Play.application().classloader());
 				if (entity.isAnnotationPresent(NoSqlEntity.class))
 					list.add(entity);
 			} catch (ClassNotFoundException e) {
