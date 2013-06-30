@@ -12,6 +12,5 @@ compileOrder := CompileOrder.JavaThenScala
 libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "2.0.M5b" % "test",
     "com.alvazan" % "playorm" % "1.5",
-    "play" %% "play" % "2.1.1",
-    "play" %% "play-java" % "2.1.1"
+    "play" %% "play" % "2.1.1"
 )

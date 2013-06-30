@@ -15,7 +15,6 @@ import com.alvazan.orm.api.base.anno.NoSqlEntity;
 import play.Application;
 import play.Play;
 import play.Plugin;
-import play.libs.Classpath;
 
 public class Play2Plugin extends Plugin {
 	
@@ -44,32 +43,22 @@ public class Play2Plugin extends Plugin {
 	    	NoSqlEntityManagerFactory factory = emfs.get("emf");
 	    	factory.close();
 	        return;
-	    }	
+	    }
 	}
 
 	@Override
 	public void onStart() {
-		Set<String> classes = Classpath.getTypes(Play.application(), "nosql");
-        if (classes.isEmpty())
-            return;
-        @SuppressWarnings("rawtypes")
-		List<Class> list = new ArrayList<Class>();
-        for (String classname : classes) {
-        	try {
-				Class<?> entity = Class.forName(classname);
-				if (entity.isAnnotationPresent(NoSqlEntity.class))
-					list.add(entity);
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-        }
- 	    if (NoSqlForPlay2.getEntityManagerFactory() != null) {
- 	    	NoSqlEntityManagerFactory factory = NoSqlForPlay2.getEntityManagerFactory();
-        	factory.rescan(list, Play.application().classloader());
+	// check if nosql.Persistence is here
+	try {
+		Class.forName("nosql.Persistence", true, Play.application().classloader());
+	} catch (ClassNotFoundException e) {
+				return;
+	}
+
+	if (NoSqlForPlay2.getEntityManagerFactory() != null) {
         	return;
         }
         Map<String, Object> props = new HashMap<String, Object>();
-        props.put(Bootstrap.LIST_OF_EXTRA_CLASSES_TO_SCAN_KEY, list);
         props.put(Bootstrap.AUTO_CREATE_KEY, "create");
         props.put("nosql.nosqltype", Play.application().configuration().getString("nosql.nosqltype"));
        	props.put("nosql.cassandra.clusterName", Play.application().configuration().getString("nosql.cassandra.clusterName"));
