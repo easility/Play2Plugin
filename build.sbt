@@ -9,8 +9,9 @@ javaSource in Compile := new File( "src")
 
 compileOrder := CompileOrder.JavaThenScala
 
-libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "2.0.M5b" % "test",
+crossPaths := false
+
+libraryDependencies := Seq(
     "com.alvazan" % "playorm" % "1.5",
     "play" %% "play" % "2.1.1"
 )
