@@ -13,7 +13,8 @@ public class NoSqlForPlay2 implements NoSqlInterface {
     private static ThreadLocal<NoSqlEntityManager> entityManager = new ThreadLocal<NoSqlEntityManager>();
   
     /**
-     * Get the default EntityManager for this thread.
+     * Get the default EntityManager for this thread. If there is no
+     * entity manager bound to thread, new unbound one is returned.
      */
     public NoSqlEntityManager em() {
         NoSqlEntityManager em = entityManager.get();
@@ -26,12 +27,12 @@ public class NoSqlForPlay2 implements NoSqlInterface {
         return entityManagerFactory.createEntityManager();
     }
 
-    /**
-     * Bind an NoSqlEntityManager to the current thread.
-     */
-    public static void bindForCurrentThread(NoSqlEntityManager em) {
-    	entityManager.set(em);
-    }
+	/**
+	* Bind an NoSqlEntityManager to the current thread.
+	*/
+	public static void bindForCurrentThread(NoSqlEntityManager em) {
+		entityManager.set(em);
+	}
 
 	public static NoSqlEntityManagerFactory getEntityManagerFactory() {
 		return entityManagerFactory;
