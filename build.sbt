@@ -9,7 +9,7 @@ compileOrder := CompileOrder.JavaThenScala
 
 crossPaths := false
 
-libraryDependencies := Seq(
+libraryDependencies ++= Seq(
     "com.alvazan" % "playorm" % "1.5",
     "play" %% "play" % "2.1.1"
 )
