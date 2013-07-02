@@ -1,7 +1,5 @@
 package com.alvazan.play2;
 
-
-
 import play.Application;
 import play.Play;
 
@@ -22,21 +20,10 @@ public class NoSqlForPlay2 implements NoSqlInterface {
         if(em != null)
             return em;
         
-        Application app = Play.application();
-        if(app == null) {
-            throw new RuntimeException("No application running");
-        }
-        
-        Play2Plugin noSqlPlugin2 = app.plugin(Play2Plugin.class);
-        if(noSqlPlugin2 == null) {
-            throw new RuntimeException("No  noSqlPlugin2 configured");
-        }
-        
-        em = noSqlPlugin2.em();
-        if(em == null) {
+        if(entityManagerFactory == null) {
             throw new RuntimeException("No NoSqlEntityManagerFactory configured");
         }
-        return em;
+        return entityManagerFactory.createEntityManager();
     }
 
     /**
@@ -52,5 +39,9 @@ public class NoSqlForPlay2 implements NoSqlInterface {
 
 	static void setEntityManagerFactory(NoSqlEntityManagerFactory factory) {
 		entityManagerFactory = factory;
+	}
+
+	static void clearContext() {
+		entityManager.remove();
 	}
 }
