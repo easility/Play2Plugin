@@ -11,7 +11,6 @@ import com.alvazan.orm.api.base.NoSqlEntityManager;
 import com.alvazan.orm.api.base.NoSqlEntityManagerFactory;
 import com.alvazan.orm.api.base.anno.NoSqlEntity;
 
-
 import play.Application;
 import play.Play;
 import play.Plugin;
@@ -30,7 +29,6 @@ public class Play2Plugin extends Plugin {
         String status =  application.configuration().getString("playormplugin");
         return status != null && status.equals("disabled");
     } 
-    
     
 	@Override
 	public boolean enabled() {
@@ -67,15 +65,5 @@ public class Play2Plugin extends Plugin {
         NoSqlEntityManagerFactory factory = Bootstrap.create(props, Play.application().classloader());
         NoSqlForPlay2.setEntityManagerFactory(factory);
         emfs.put("emf", factory);
-        
 	}
-	
-	public NoSqlEntityManager em() {
-		if (NoSqlForPlay2.getEntityManagerFactory() != null) {
-			NoSqlEntityManagerFactory factory = NoSqlForPlay2.getEntityManagerFactory();
-			return factory.createEntityManager();			
-		}
-		else 
-			return null;
-    }
 }
