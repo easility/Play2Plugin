@@ -1,7 +1,5 @@
 package com.alvazan.play2;
 
-
-
 import play.Application;
 import play.Play;
 
@@ -15,36 +13,26 @@ public class NoSqlForPlay2 implements NoSqlInterface {
     private static ThreadLocal<NoSqlEntityManager> entityManager = new ThreadLocal<NoSqlEntityManager>();
   
     /**
-     * Get the default EntityManager for this thread.
+     * Get the default EntityManager for this thread. If there is no
+     * entity manager bound to thread, new unbound one is returned.
      */
     public NoSqlEntityManager em() {
         NoSqlEntityManager em = entityManager.get();
         if(em != null)
             return em;
         
-        Application app = Play.application();
-        if(app == null) {
-            throw new RuntimeException("No application running");
-        }
-        
-        Play2Plugin noSqlPlugin2 = app.plugin(Play2Plugin.class);
-        if(noSqlPlugin2 == null) {
-            throw new RuntimeException("No  noSqlPlugin2 configured");
-        }
-        
-        em = noSqlPlugin2.em();
-        if(em == null) {
+        if(entityManagerFactory == null) {
             throw new RuntimeException("No NoSqlEntityManagerFactory configured");
         }
-        return em;
+        return entityManagerFactory.createEntityManager();
     }
 
-    /**
-     * Bind an NoSqlEntityManager to the current thread.
-     */
-    public static void bindForCurrentThread(NoSqlEntityManager em) {
-    	entityManager.set(em);
-    }
+	/**
+	* Bind an NoSqlEntityManager to the current thread.
+	*/
+	public static void bindForCurrentThread(NoSqlEntityManager em) {
+		entityManager.set(em);
+	}
 
 	public static NoSqlEntityManagerFactory getEntityManagerFactory() {
 		return entityManagerFactory;
@@ -52,5 +40,9 @@ public class NoSqlForPlay2 implements NoSqlInterface {
 
 	static void setEntityManagerFactory(NoSqlEntityManagerFactory factory) {
 		entityManagerFactory = factory;
+	}
+
+	static void clearContext() {
+		entityManager.remove();
 	}
 }
