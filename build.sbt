@@ -1,3 +1,4 @@
+organization := "com.alvazan.play2"
 
 normalizedName := "plugin"
 
