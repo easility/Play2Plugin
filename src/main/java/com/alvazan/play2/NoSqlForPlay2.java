@@ -10,29 +10,16 @@ import com.alvazan.play.NoSqlInterface;
 public class NoSqlForPlay2 implements NoSqlInterface {
 	private static NoSqlEntityManagerFactory entityManagerFactory = null;
 	
-    private static ThreadLocal<NoSqlEntityManager> entityManager = new ThreadLocal<NoSqlEntityManager>();
-  
     /**
-     * Get the default EntityManager for this thread. If there is no
-     * entity manager bound to thread, new unbound one is returned.
+     * Get the new NoSqlEntityManager instance.
      */
     public NoSqlEntityManager em() {
-        NoSqlEntityManager em = entityManager.get();
-        if(em != null)
-            return em;
-        
         if(entityManagerFactory == null) {
             throw new RuntimeException("No NoSqlEntityManagerFactory configured");
         }
-        return entityManagerFactory.createEntityManager();
+        NoSqlEntityManager em = entityManagerFactory.createEntityManager();
+        return em;
     }
-
-	/**
-	* Bind an NoSqlEntityManager to the current thread.
-	*/
-	public static void bindForCurrentThread(NoSqlEntityManager em) {
-		entityManager.set(em);
-	}
 
 	public static NoSqlEntityManagerFactory getEntityManagerFactory() {
 		return entityManagerFactory;
@@ -40,9 +27,5 @@ public class NoSqlForPlay2 implements NoSqlInterface {
 
 	static void setEntityManagerFactory(NoSqlEntityManagerFactory factory) {
 		entityManagerFactory = factory;
-	}
-
-	static void clearContext() {
-		entityManager.remove();
 	}
 }
