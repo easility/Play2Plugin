@@ -3,7 +3,7 @@ import play.mvc.*;
 import play.mvc.Http.Request;
 import play.mvc.Http.Context;
 import java.lang.reflect.Method;
-import com.alvazan.orm.api.base.NoSqlEntityManager;
+import com.alvazan.play2.NoSqlForPlay2;
 
 public class Global extends GlobalSettings {
 
