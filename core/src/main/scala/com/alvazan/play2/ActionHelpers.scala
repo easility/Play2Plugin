@@ -7,7 +7,7 @@ object ActionHelpers {
 
   def withEntityManager(action: NoSqlEntityManager => EssentialAction):EssentialAction = {
 
-     EssentialAction { request => 
+     EssentialAction { request =>
          action(NoSqlForPlay2.getEntityManagerFactory().createEntityManager())(request)
      }
   }
