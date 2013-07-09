@@ -4,7 +4,9 @@ version in ThisBuild := "2.1-SNAPSHOT"
 
 scalaVersion in ThisBuild := "2.10.2"
 
-publishArtifact := false
+publish := ()
+
+publishLocal := ()
 
 normalizedName := "root"
 
