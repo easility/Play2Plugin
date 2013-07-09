@@ -1,16 +1,12 @@
-organization := "com.alvazan.play2"
+organization in ThisBuild := "com.alvazan.play2"
 
 normalizedName := "plugin"
 
-version := "2.1-SNAPSHOT"
+version in ThisBuild := "2.1-SNAPSHOT"
 
-scalaVersion := "2.10.2"
+scalaVersion in ThisBuild := "2.10.2"
 
-compileOrder := CompileOrder.JavaThenScala
-
-crossPaths := false
-
-libraryDependencies ++= Seq(
+libraryDependencies in ThisBuild ++= Seq(
     "com.alvazan" % "playorm" % "1.5",
     "play" %% "play" % "2.1.1"
 )
