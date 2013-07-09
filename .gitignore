@@ -1,8 +1,4 @@
-output
 eclipsegen
-examples/example/bin
-.gradle
 .settings
 /bin
 target/
-project/target/
