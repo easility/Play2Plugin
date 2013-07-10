@@ -11,6 +11,8 @@ publishLocal := ()
 normalizedName := "root"
 
 libraryDependencies in ThisBuild ++= Seq(
-    "com.alvazan" % "playorm" % "1.5",
-    "play" %% "play" % "2.1.1"
+    "com.alvazan" % "playorm" % "1.6",
+    "play" %% "play" % "2.1.2"
 )
+
+resolvers in ThisBuild += Resolver.typesafeRepo("releases")
