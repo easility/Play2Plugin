@@ -14,6 +14,7 @@ import com.alvazan.orm.api.base.anno.NoSqlEntity;
 import play.Application;
 import play.Play;
 import play.Plugin;
+import play.Logger;
 
 public class Play2Plugin extends Plugin {
 	
@@ -49,6 +50,7 @@ public class Play2Plugin extends Plugin {
 	try {
 		Class.forName("nosql.Persistence", true, Play.application().classloader());
 	} catch (ClassNotFoundException e) {
+                                Logger.warn("marker class nosql.Persistence not found - not starting");
 				return;
 	}
 
