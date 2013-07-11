@@ -14,33 +14,33 @@ import com.alvazan.orm.api.base.anno.NoSqlEntity;
 import play.Application;
 import play.Play;
 import play.Plugin;
+import play.Logger;
 
 public class Play2Plugin extends Plugin {
 	
     private final Application application;
     
-    private final Map<String, NoSqlEntityManagerFactory> emfs = new HashMap<String, NoSqlEntityManagerFactory>();
+    private NoSqlEntityManagerFactory emf;
 
     public Play2Plugin(Application application) {
         this.application = application;
     }
-    
-    private boolean isPluginDisabled() {
-        String status =  application.configuration().getString("playormplugin");
-        return status != null && status.equals("disabled");
-    } 
-    
+
 	@Override
 	public boolean enabled() {
-		return isPluginDisabled() == false;		
+             String status =  application.configuration().getString("playormplugin");
+             // enabled by default
+             if (status == null) return true;
+
+             return ! status.equalsIgnoreCase("disabled");
 	}
 
 	@Override
 	public void onStop() {
-	    if (emfs.get("emf") != null) {
-	    	NoSqlEntityManagerFactory factory = emfs.get("emf");
-	    	factory.close();
-	        return;
+	    if (emf != null) {
+                NoSqlForPlay2.setEntityManagerFactory(null);
+	    	emf.close();
+                emf = null;
 	    }
 	}
 
@@ -50,6 +50,7 @@ public class Play2Plugin extends Plugin {
 	try {
 		Class.forName("nosql.Persistence", true, Play.application().classloader());
 	} catch (ClassNotFoundException e) {
+                                Logger.warn("marker class nosql.Persistence not found - not starting");
 				return;
 	}
 
@@ -64,6 +65,6 @@ public class Play2Plugin extends Plugin {
        	props.put("nosql.cassandra.seeds", Play.application().configuration().getString("nosql.cassandra.seeds"));	
         NoSqlEntityManagerFactory factory = Bootstrap.create(props, Play.application().classloader());
         NoSqlForPlay2.setEntityManagerFactory(factory);
-        emfs.put("emf", factory);
+        emf = factory;
 	}
 }
