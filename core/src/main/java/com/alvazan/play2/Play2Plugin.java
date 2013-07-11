@@ -19,7 +19,7 @@ public class Play2Plugin extends Plugin {
 	
     private final Application application;
     
-    private final Map<String, NoSqlEntityManagerFactory> emfs = new HashMap<String, NoSqlEntityManagerFactory>();
+    private NoSqlEntityManagerFactory emf;
 
     public Play2Plugin(Application application) {
         this.application = application;
@@ -36,10 +36,9 @@ public class Play2Plugin extends Plugin {
 
 	@Override
 	public void onStop() {
-	    if (emfs.get("emf") != null) {
-	    	NoSqlEntityManagerFactory factory = emfs.get("emf");
-	    	factory.close();
-	        return;
+	    if (emf != null) {
+	    	emf.close();
+                emf = null;
 	    }
 	}
 
@@ -63,6 +62,6 @@ public class Play2Plugin extends Plugin {
        	props.put("nosql.cassandra.seeds", Play.application().configuration().getString("nosql.cassandra.seeds"));	
         NoSqlEntityManagerFactory factory = Bootstrap.create(props, Play.application().classloader());
         NoSqlForPlay2.setEntityManagerFactory(factory);
-        emfs.put("emf", factory);
+        emf = factory;
 	}
 }
