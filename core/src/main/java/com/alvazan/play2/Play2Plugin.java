@@ -37,6 +37,7 @@ public class Play2Plugin extends Plugin {
 	@Override
 	public void onStop() {
 	    if (emf != null) {
+                NoSqlForPlay2.setEntityManagerFactory(null);
 	    	emf.close();
                 emf = null;
 	    }
