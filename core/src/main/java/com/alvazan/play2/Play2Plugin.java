@@ -24,15 +24,14 @@ public class Play2Plugin extends Plugin {
     public Play2Plugin(Application application) {
         this.application = application;
     }
-    
-    private boolean isPluginDisabled() {
-        String status =  application.configuration().getString("playormplugin");
-        return status != null && status.equals("disabled");
-    } 
-    
+
 	@Override
 	public boolean enabled() {
-		return isPluginDisabled() == false;		
+             String status =  application.configuration().getString("playormplugin");
+             // enabled by default
+             if (status == null) return true;
+
+             return ! status.equalsIgnoreCase("disabled");
 	}
 
 	@Override
